@@ -21,7 +21,7 @@ export default function Index() {
 
       // Navigasi ke tab pertama setelah Splash Screen selesai
       console.log("Navigating to Home Screen...");
-      router.push('./screens/RegisterScreen');
+      router.push('./screens/LoginScreen');
           };
 
     loadApp();
@@ -29,7 +29,7 @@ export default function Index() {
 
   return (
     <View style={styles.container}>
-      <Image source={require('../../assets/images/icon.png')} style={styles.logo} />
+      <Image source={require('../images/Icon.png')} style={styles.logo} />
     </View>
   );
 }
@@ -42,8 +42,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#ffffff',
   },
   logo: {
-    width: 150,
-    height: 150,
+    width: 200,
+    height: 200,
     marginBottom: 20,
   },
   title: {

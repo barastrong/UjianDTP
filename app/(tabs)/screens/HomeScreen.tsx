@@ -7,34 +7,33 @@ import {
   Image,
   TouchableOpacity,
   TextInput,
+  ScrollView,
 } from 'react-native';
 import { CategoryList, DatabaseList } from '../../../data/data';
-import { Link, useRouter } from 'expo-router';  // Importing useRouter
-import Icon from 'react-native-vector-icons/FontAwesome'; // Importing icons
+import { Link, useRouter } from 'expo-router';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 const HomeScreen = () => {
   const [selectedCategoryId, setSelectedCategoryId] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
-  const router = useRouter(); // Initialize the router
+  const router = useRouter();
 
-  // Function to filter database based on query
   const searchDatabase = (query, data) => {
-    if (!query) return data; // If no query, return the full list
-    const result = data.filter((item) =>
+    if (!query) return data;
+    return data.filter((item) =>
       item.name.toLowerCase().includes(query.toLowerCase())
     );
-    return result;
   };
 
-  // Filter database list based on selected category
   const categoryFilteredDatabaseList = selectedCategoryId
     ? DatabaseList.filter((item) => item.categoryId === selectedCategoryId)
     : DatabaseList;
 
-  // Apply search filter
-  const filteredDatabaseList = searchDatabase(searchQuery, categoryFilteredDatabaseList);
+  const filteredDatabaseList = searchDatabase(
+    searchQuery,
+    categoryFilteredDatabaseList
+  );
 
-  // Render a single category item
   const renderCategoryItem = ({ item }) => (
     <TouchableOpacity
       style={[
@@ -44,13 +43,11 @@ const HomeScreen = () => {
       onPress={() =>
         setSelectedCategoryId((prev) => (prev === item.id ? null : item.id))
       }
-      accessibilityLabel={`Select category ${item.name}`}
     >
       <Text style={styles.itemText}>{item.name}</Text>
     </TouchableOpacity>
   );
 
-  // Render a single database item
   const renderDatabaseItem = ({ item }) => (
     <Link
       href={{
@@ -58,7 +55,6 @@ const HomeScreen = () => {
         params: { name: item.name },
       }}
       style={styles.linkContainer}
-      accessibilityLabel={`View details for ${item.name}`}
     >
       <View style={styles.itemDatabaseContainer}>
         <Image source={{ uri: item.icon }} style={styles.itemIcon} />
@@ -74,45 +70,48 @@ const HomeScreen = () => {
         style={styles.searchInput}
         placeholder="Search..."
         value={searchQuery}
-        onChangeText={(text) => {
-          setSearchQuery(text);
-        }}
+        onChangeText={(text) => setSearchQuery(text)}
       />
 
       <Text style={styles.title}>Welcome to HomeScreen</Text>
 
-      {/* Category List */}
-      <FlatList
-        horizontal
-        data={CategoryList}
-        renderItem={renderCategoryItem}
-        keyExtractor={(item) => item.id.toString()}
-        showsHorizontalScrollIndicator={false}
-        contentContainerStyle={styles.flatListContainer}
-      />
+      {/* ScrollView for better content visibility */}
+      <ScrollView>
+        {/* Category List */}
+        <FlatList
+          horizontal
+          data={CategoryList}
+          renderItem={renderCategoryItem}
+          keyExtractor={(item) => item.id.toString()}
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={styles.categoryListContainer} // Center the categories
+        />
 
-      {/* Database List */}
-      <FlatList
-        data={filteredDatabaseList}
-        renderItem={renderDatabaseItem}
-        keyExtractor={(item) => item.id.toString()}
-        contentContainerStyle={styles.flatListContainer}
-        ListEmptyComponent={
-          <Text style={styles.emptyText}>No items found.</Text>
-        }
-      />
+        {/* Database List */}
+        <FlatList
+          data={filteredDatabaseList}
+          renderItem={renderDatabaseItem}
+          keyExtractor={(item) => item.id.toString()}
+          contentContainerStyle={styles.flatListContainer} // Adjusted style for spacing
+          numColumns={2} // Display items in grid format
+          ListEmptyComponent={
+            <Text style={styles.emptyText}>No items found.</Text>
+          }
+        />
+      </ScrollView>
 
-      {/* Bottom Bar with Home and Profile Icons */}
+      {/* Bottom Bar */}
       <View style={styles.bottomBar}>
-        <TouchableOpacity style={styles.iconContainer}
-          onPress={()=> router.push('./HomeScreen')}
+        <TouchableOpacity
+          style={styles.iconContainer}
+          onPress={() => router.push('./HomeScreen')}
         >
           <Icon name="home" size={30} color="#007BFF" />
           <Text style={styles.iconText}>Home</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.iconContainer}
-          onPress={() => router.push('./ProfileScreen')}  // Navigate to ProfileScreen
+          onPress={() => router.push('./ProfileScreen')}
         >
           <Icon name="user" size={30} color="#007BFF" />
           <Text style={styles.iconText}>Profile</Text>
@@ -125,21 +124,15 @@ const HomeScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#ffffff',
+    backgroundColor: '#f9f9f9',
     padding: 16,
-    justifyContent: 'space-between', // To ensure content is spaced out with the bottom bar
+    justifyContent: 'space-between',
   },
   title: {
     fontSize: 24,
     fontWeight: 'bold',
     textAlign: 'center',
     marginBottom: 16,
-  },
-  subTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginVertical: 16,
-    textAlign: 'center',
   },
   searchInput: {
     height: 40,
@@ -148,28 +141,43 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     paddingHorizontal: 10,
     marginBottom: 16,
+    backgroundColor: '#ffffff',
+  },
+  categoryListContainer: {
+    justifyContent: 'center', // Center horizontally
+    alignItems: 'center',
+    flexGrow: 1,
   },
   itemContainer: {
     marginRight: 10,
-    backgroundColor: '#f0f0f0',
+    backgroundColor: '#ffffff',
     borderRadius: 20,
     justifyContent: 'center',
     alignItems: 'center',
     height: 50,
-    width: 115,
+    width: 120,
     padding: 6,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 3,
+    elevation: 4,
   },
   selectedCategory: {
     backgroundColor: '#007BFF',
+    borderWidth: 1,
+    borderColor: '#0056b3',
   },
   itemDatabaseContainer: {
+    flex: 1,
     alignItems: 'center',
-    marginVertical: 8,
+    margin: 8,
   },
   itemText: {
     fontSize: 14,
     color: '#333',
     textAlign: 'center',
+    fontWeight: '500',
   },
   itemIcon: {
     width: 60,
@@ -178,11 +186,13 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   linkContainer: {
-    marginVertical: 8,
+    flex: 1,
     alignItems: 'center',
+    margin: 8,
   },
   flatListContainer: {
-    paddingVertical: 8,
+    paddingBottom: 16,
+    marginTop: 20,
   },
   emptyText: {
     textAlign: 'center',

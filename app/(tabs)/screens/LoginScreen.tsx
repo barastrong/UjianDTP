@@ -57,6 +57,13 @@ const LoginScreen = () => {
       {error ? <Text style={styles.error}>{error}</Text> : null}
 
       <Button title="Login" onPress={handleLogin} />
+
+      <Text>
+      Don't have an account?
+      <Text style={{ color: '#007bff' }} onPress={() => router.push('./RegisterScreen')}>
+        Register
+        </Text>
+        </Text>
     </View>
   );
 };

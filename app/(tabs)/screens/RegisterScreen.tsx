@@ -9,7 +9,7 @@ const RegisterScreen = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-  const router = useRouter(); // Hook for navigation
+  const router = useRouter();
 
   const handleRegister = async () => {
     if (!nama || !email || !password) {
@@ -57,10 +57,15 @@ const RegisterScreen = () => {
         onChangeText={setPassword}
         secureTextEntry
       />
-
       {error ? <Text style={styles.error}>{error}</Text> : null}
 
       <Button title="Register" onPress={handleRegister} />
+      <Text>
+      Already have an Acoount?
+      <Text style={{ color: '#007bff' }} onPress={() => router.push('./LoginScreen')}>
+        Login
+        </Text>
+    </Text>
     </View>
   );
 };
