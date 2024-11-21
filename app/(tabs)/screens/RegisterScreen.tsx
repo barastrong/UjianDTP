@@ -20,7 +20,7 @@ const RegisterScreen = () => {
     try {
       // Save registration data to Firestore
       await addDoc(collection(db, 'users'), {
-        nama: nama,
+        name: nama,
         email: email,
         password: password,
       });

@@ -18,6 +18,7 @@ const HomeScreen = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const router = useRouter();
 
+  // Function to search within a specific dataset
   const searchDatabase = (query, data) => {
     if (!query) return data;
     return data.filter((item) =>
@@ -25,13 +26,12 @@ const HomeScreen = () => {
     );
   };
 
-  const categoryFilteredDatabaseList = selectedCategoryId
-    ? DatabaseList.filter((item) => item.categoryId === selectedCategoryId)
-    : DatabaseList;
-
+  // Filter the displayed DatabaseList based on selected category and search query
   const filteredDatabaseList = searchDatabase(
     searchQuery,
-    categoryFilteredDatabaseList
+    selectedCategoryId
+      ? DatabaseList.filter((item) => item.categoryId === selectedCategoryId)
+      : DatabaseList
   );
 
   const renderCategoryItem = ({ item }) => (
@@ -44,7 +44,14 @@ const HomeScreen = () => {
         setSelectedCategoryId((prev) => (prev === item.id ? null : item.id))
       }
     >
-      <Text style={styles.itemText}>{item.name}</Text>
+      <Text
+        style={[
+          styles.itemText,
+          selectedCategoryId === item.id && styles.selectedCategoryText,
+        ]}
+      >
+        {item.name}
+      </Text>
     </TouchableOpacity>
   );
 
@@ -65,7 +72,7 @@ const HomeScreen = () => {
 
   return (
     <View style={styles.container}>
-      {/* Search Input */}
+          <ScrollView>
       <TextInput
         style={styles.searchInput}
         placeholder="Search..."
@@ -74,26 +81,21 @@ const HomeScreen = () => {
       />
 
       <Text style={styles.title}>Welcome to HomeScreen</Text>
-
-      {/* ScrollView for better content visibility */}
-      <ScrollView>
-        {/* Category List */}
         <FlatList
           horizontal
           data={CategoryList}
           renderItem={renderCategoryItem}
           keyExtractor={(item) => item.id.toString()}
           showsHorizontalScrollIndicator={false}
-          contentContainerStyle={styles.categoryListContainer} // Center the categories
+          contentContainerStyle={styles.categoryListContainer}
         />
-
         {/* Database List */}
         <FlatList
           data={filteredDatabaseList}
           renderItem={renderDatabaseItem}
           keyExtractor={(item) => item.id.toString()}
-          contentContainerStyle={styles.flatListContainer} // Adjusted style for spacing
-          numColumns={2} // Display items in grid format
+          contentContainerStyle={styles.flatListContainer}
+          numColumns={2}
           ListEmptyComponent={
             <Text style={styles.emptyText}>No items found.</Text>
           }
@@ -109,6 +111,7 @@ const HomeScreen = () => {
           <Icon name="home" size={30} color="#007BFF" />
           <Text style={styles.iconText}>Home</Text>
         </TouchableOpacity>
+
         <TouchableOpacity
           style={styles.iconContainer}
           onPress={() => router.push('./ProfileScreen')}
@@ -124,97 +127,114 @@ const HomeScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f9f9f9',
-    padding: 16,
-    justifyContent: 'space-between',
+    backgroundColor: '#F8F9FA',
+    padding: 10,
+  },
+  searchInput: {
+    backgroundColor: '#FFFFFF',
+    borderWidth: 1,
+    borderColor: '#CED4DA',
+    borderRadius: 8,
+    padding: 10,
+    fontSize: 16,
+    marginBottom: 15,
+    shadowColor: '#000',
+    shadowOpacity: 0.1,
+    shadowOffset: { width: 0, height: 2 },
+    elevation: 2,
   },
   title: {
     fontSize: 24,
     fontWeight: 'bold',
+    color: '#007BFF',
+    marginBottom: 10,
     textAlign: 'center',
-    marginBottom: 16,
-  },
-  searchInput: {
-    height: 40,
-    borderColor: '#ccc',
-    borderWidth: 1,
-    borderRadius: 8,
-    paddingHorizontal: 10,
-    marginBottom: 16,
-    backgroundColor: '#ffffff',
   },
   categoryListContainer: {
-    justifyContent: 'center', // Center horizontally
+    paddingHorizontal: 5,
+    marginBottom: 10,
     alignItems: 'center',
-    flexGrow: 1,
   },
   itemContainer: {
-    marginRight: 10,
-    backgroundColor: '#ffffff',
-    borderRadius: 20,
-    justifyContent: 'center',
-    alignItems: 'center',
-    height: 50,
-    width: 120,
-    padding: 6,
+    backgroundColor: '#FFFFFF',
+    padding: 10,
+    borderRadius: 8,
+    marginHorizontal: 5,
     shadowColor: '#000',
+    shadowOpacity: 0.1,
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 3,
-    elevation: 4,
+    elevation: 2,
   },
   selectedCategory: {
     backgroundColor: '#007BFF',
-    borderWidth: 1,
-    borderColor: '#0056b3',
+  },
+  itemText: {
+    fontSize: 14,
+    color: '#343A40',
+    textAlign: 'center',
+  },
+  selectedCategoryText: {
+    color: '#FFFFFF',
+    fontWeight: 'bold',
+  },
+  flatListContainer: {
+    justifyContent: 'space-between',
+    paddingHorizontal: 5,
+    paddingTop: 10,
   },
   itemDatabaseContainer: {
     flex: 1,
     alignItems: 'center',
-    margin: 8,
-  },
-  itemText: {
-    fontSize: 14,
-    color: '#333',
-    textAlign: 'center',
-    fontWeight: '500',
+    padding: 12,
+    backgroundColor: '#FFFFFF',
+    borderRadius: 5,
+    shadowColor: '#000',
+    shadowOpacity: 0.1,
+    justifyContent: 'center',
+    shadowOffset: { width: 0, height: 2 },
   },
   itemIcon: {
     width: 60,
     height: 60,
-    borderRadius: 8,
-    marginBottom: 8,
-  },
-  linkContainer: {
-    flex: 1,
-    alignItems: 'center',
-    margin: 8,
-  },
-  flatListContainer: {
-    paddingBottom: 16,
-    marginTop: 20,
+    borderRadius: 30,
+    marginBottom: 10,
   },
   emptyText: {
+    fontSize: 16,
+    color: '#6C757D',
     textAlign: 'center',
-    color: '#999',
     marginTop: 20,
   },
   bottomBar: {
     flexDirection: 'row',
     justifyContent: 'space-around',
-    alignItems: 'center',
+    backgroundColor: '#FFFFFF',
     paddingVertical: 10,
-    backgroundColor: '#f0f0f0',
     borderTopWidth: 1,
-    borderTopColor: '#ccc',
+    borderTopColor: '#CED4DA',
+    shadowColor: '#000',
+    shadowOpacity: 0.1,
+    shadowOffset: { width: 0, height: -2 },
+    elevation: 5,
   },
   iconContainer: {
     alignItems: 'center',
   },
   iconText: {
     fontSize: 12,
-    color: '#333',
-    marginTop: 4,
+    color: '#343A40',
+    marginTop: 5,
+  },
+  linkContainer: {
+    flex: 1,
+    margin: 5,
+    backgroundColor: '#FFFFFF',
+    borderRadius: 8,
+    overflow: 'hidden',
+    shadowColor: '#000',
+    shadowOpacity: 0.1,
+    shadowOffset: { width: 0, height: 2 },
+    elevation: 2,
   },
 });
 
