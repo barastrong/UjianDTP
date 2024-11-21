@@ -1,9 +1,7 @@
 import React, { useEffect } from 'react';
-import { View, Text, Image, StyleSheet } from 'react-native';
+import { View, Image, StyleSheet } from 'react-native';
 import * as SplashScreen from 'expo-splash-screen';
 import { useRouter } from 'expo-router';
-import Home from './screens/RegisterScreen';
-import {Link} from "expo-router"; 
 
 // Mencegah Splash Screen otomatis menghilang
 SplashScreen.preventAutoHideAsync();
@@ -13,16 +11,19 @@ export default function Index() {
 
   useEffect(() => {
     const loadApp = async () => {
-      // Menampilkan splash screen selama 4 detik
-      await new Promise(resolve => setTimeout(resolve, 4000));
+      try {
+        // Menampilkan splash screen selama 4 detik
+        await new Promise(resolve => setTimeout(resolve, 4000));
 
-      // Setelah 5 detik, sembunyikan Splash Screen
-      await SplashScreen.hideAsync();
+        // Sembunyikan Splash Screen setelah durasi selesai
+        await SplashScreen.hideAsync();
 
-      // Navigasi ke tab pertama setelah Splash Screen selesai
-      console.log("Navigating to Home Screen...");
-      router.push('./screens/LoginScreen');
-          };
+        // Navigasi ke LoginScreen
+        router.push('./screens/LoginScreen'); // Pastikan path sesuai dengan struktur file Anda
+      } catch (error) {
+        console.error("Error during splash screen handling:", error);
+      }
+    };
 
     loadApp();
   }, []);
@@ -44,10 +45,5 @@ const styles = StyleSheet.create({
   logo: {
     width: 200,
     height: 200,
-    marginBottom: 20,
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
   },
 });

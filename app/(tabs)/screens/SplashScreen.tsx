@@ -6,7 +6,7 @@ const SplashScreenComponent = ({ navigation }: any) => {
   useEffect(() => {
     const timer = setTimeout(() => {
       navigation.replace('Login');  // Arahkan ke Login setelah 2 detik
-    }, 2000);
+    }, 4000);
 
     return () => clearTimeout(timer);
   }, [navigation]);
