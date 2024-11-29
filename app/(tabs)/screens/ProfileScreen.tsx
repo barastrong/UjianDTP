@@ -97,6 +97,7 @@ const ProfileScreen = () => {
           </TouchableOpacity>
         ))}
       </View>
+      
     </ScrollView>
   );
 };

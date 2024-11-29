@@ -25,19 +25,21 @@ const DetailScreen = () => {
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      <Image 
-        source={{ uri: selectedItem.icon }} 
-        style={styles.itemIcon} 
-        resizeMode="contain"
-      />
-      <Text style={styles.itemName}>{selectedItem.name}</Text>
-      <Text style={styles.itemDescription}>{selectedItem.desc}</Text>
-      <TouchableOpacity 
-        style={styles.backButton} 
-        onPress={() => router.push('../HomeScreen')}
-      >
-        <Text style={styles.backButtonText}>Back</Text>
-      </TouchableOpacity>
+      <View style={styles.cardContainer}>
+        <Image 
+          source={{ uri: selectedItem.icon }} 
+          style={styles.itemIcon} 
+          resizeMode="contain"
+        />
+        <Text style={styles.itemName}>{selectedItem.name}</Text>
+        <Text style={styles.itemDescription}>{selectedItem.desc}</Text>
+        <TouchableOpacity 
+          style={styles.backButton} 
+          onPress={() => router.push('../HomeScreen')}
+        >
+          <Text style={styles.backButtonText}>Back</Text>
+        </TouchableOpacity>
+      </View>
     </ScrollView>
   );
 };
@@ -45,65 +47,74 @@ const DetailScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
-    padding: 16,
-    alignItems: 'center',
-    backgroundColor: '#f5f5f5',
-  },
-  errorContainer: {
-    flexGrow: 1,
+    backgroundColor: '#E5E5E5',
     justifyContent: 'center',
     alignItems: 'center',
     padding: 16,
-    backgroundColor: '#f5f5f5',
   },
-  itemIcon: {
-    width: 200,
-    height: 200,
-    borderRadius: 15,
-    marginBottom: 24,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
-  },
-  itemName: {
-    fontSize: 28,
-    fontWeight: '700',
-    marginBottom: 16,
-    textAlign: 'center',
-    color: '#333',
-  },
-  itemDescription: {
-    fontSize: 18,
-    color: '#666',
-    textAlign: 'center',
-    marginBottom: 24,
-    lineHeight: 26,
-    paddingHorizontal: 16,
-  },
-  errorText: {
-    fontSize: 22,
-    color: '#D32F2F',
-    textAlign: 'center',
-    marginBottom: 20,
-  },
-  backButton: {
-    backgroundColor: '#007AFF',
-    paddingVertical: 12,
-    paddingHorizontal: 24,
-    borderRadius: 10,
+  cardContainer: {
+    width: '90%',
+    backgroundColor: 'white',
+    borderRadius: 20,
+    padding: 24,
     alignItems: 'center',
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.2,
+    shadowRadius: 6,
+    elevation: 5,
+  },
+  errorContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#E5E5E5',
+    padding: 16,
+  },
+  itemIcon: {
+    width: 250,
+    height: 250,
+    borderRadius: 25,
+    marginBottom: 24,
+    borderWidth: 2,
+    borderColor: '#E0E0E0',
+  },
+  itemName: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 16,
+    textAlign: 'center',
+    color: '#2C3E50',
+  },
+  itemDescription: {
+    fontSize: 16,
+    color: '#34495E',
+    textAlign: 'center',
+    marginBottom: 24,
+    lineHeight: 24,
+    paddingHorizontal: 8,
+  },
+  errorText: {
+    fontSize: 20,
+    color: '#E74C3C',
+    textAlign: 'center',
+    marginBottom: 20,
+    fontWeight: '600',
+  },
+  backButton: {
+    backgroundColor: '#3498DB',
+    paddingVertical: 12,
+    paddingHorizontal: 32,
+    borderRadius: 12,
+    alignItems: 'center',
+    width: '100%',
   },
   backButtonText: {
     color: 'white',
-    fontSize: 18,
-    fontWeight: '600',
+    fontSize: 16,
+    fontWeight: 'bold',
+    textTransform: 'uppercase',
+    letterSpacing: 1,
   },
 });
 
